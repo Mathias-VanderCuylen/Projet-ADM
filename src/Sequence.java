@@ -30,10 +30,10 @@ public class Sequence {
 //        this.c = Keyboard.nextInt();
 //        System.out.println("Entrez le module (m)");
 //        this.m = Keyboard.nextInt();
-        this.x0 = 19;
-        this.a = 61;
-        this.c = 49;
-        this.m = 120;
+        this.x0 = 1;
+        this.a = 21;
+        this.c = 3;
+        this.m = 1000;
     }
 
     private void generateSuite() {

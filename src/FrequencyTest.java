@@ -1,53 +1,61 @@
-//    // Un = Xn / m
-//    // Yn = (un * 10) (int)
-//
-//    // Etape 1 => Hypothèse 0 : la suite de nombres pseudo-aléatoire est acceptable pour ce test
-//
-//    // Etape 2 => niveau d'incertitude : a = 5%
-//
-//    // Etape 3 => tableau recensé des fréquences o
-
 import java.util.ArrayList;
 
 import static java.lang.Math.floor;
 
 public class FrequencyTest {
-    public static void run(ArrayList<Integer> sequence, int m) {
+    public static void run(ArrayList<Integer> sequence) {
         System.out.println("\n===== TEST DES FREQUENCES =====");
 
         System.out.println("\nEtape 1 : Hypothèse H0 :");
-        System.out.println("\nH0 : la suite de nombres pseudo-aléatoire est acceptable pour ce test");
-        System.out.println("\nH1 : la suite de nombres pseudo-aléatoire n'est pas acceptable pour ce test");
+        System.out.println("H0 : Les yn suivent une distribution uniforme sur l'ensemble {0,1,2,...,9}. Chaque chiffre de 0 à 9 a la même probabiité.");
+        System.out.println("H1 : Les yn ne suivent pas une distribution uniforme sur {0,1,2,...,9}.");
 
         System.out.println("\nEtape 2 : Niveau d'incertitude :");
-        System.out.println("\nα = 5%");
+        System.out.println("α = 5%");
 
-        System.out.println("\nEtape 3 : Tableau de fréquences observée / théorique :\n");
+        System.out.println("\nEtape 3 : Tableau de fréquences observée / théorique :");
         int xi = 10;
         int period = sequence.size();
-        double[] freqObs = new double[xi];
-        double[] freqTh = new double[xi];
+        double[] frequence = new double[xi];
+        double un;
+        int yn;
 
         for (int xn : sequence) {
-            double un = (double) xn / period;
-            int yn = (int) floor((un * xi));
-            freqObs[yn]++;
+            un = (double) xn / period;
+            yn = (int) floor((un * xi));
+            frequence[yn]++;
         }
 
         System.out.println("Xi \t ri \t pi \t n*pi \t (ri-n*pi)²/(n*pi)");
 
         int npi = period / xi;
         double chi2Total = 0;
+        double riTotale = 0;
+        double ri;
+        double chi2;
 
         for (int i = 0; i < xi; i++) {
-            double chi2 = ((freqObs[i] - npi) * (freqObs[i] - npi)) / (double)npi;
+            ri = frequence[i];
+            chi2 = ((ri - npi) * (ri - npi)) / (double)npi;
             chi2Total += chi2;
-            System.out.println(i + " \t " + freqObs[i] + " \t " + (1.0 / xi) + " \t " + npi + " \t " + chi2);
+            riTotale += ri;
+            System.out.println(i + " \t " + ri + " \t " + (1.0 / xi) + " \t " + npi + " \t " + chi2);
         }
+        System.out.println("Totale ri = " + riTotale);
         System.out.println("χ² total observé = " + chi2Total);
 
+        System.out.println("\nEtape 4 : Si npi >= 5 alors n >= 50.");
+        System.out.println("npi = " + npi + " et n = " + period);
 
+        System.out.println("\nEtape 5 : Le nombre de dégré le liberté.");
+        System.out.println("v = " + (xi - 1));
+        System.out.println("Consulter les tables");
+        System.out.println("Pour un α de 0,05 et un v de 9 on a un χ²théorique de 16,92");
+        System.out.println("Zone de non-rejet : ]-∞ ; 16,92]");
 
+        System.out.println("\nEtape 6 : Prise de décision");
+
+        System.out.println("χ²observé = " + chi2Total + " <= 16,92 = χ²théorique");
 
     }
 }
