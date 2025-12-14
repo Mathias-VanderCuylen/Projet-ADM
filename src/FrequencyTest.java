@@ -52,9 +52,9 @@ public class FrequencyTest {
         System.out.println("Pour un α de 0,05 et un v de 9 on a un χ²théorique de 16,92");
         System.out.println("Zone de non-rejet : ]-∞ ; 16,92]");
 
-        System.out.println("\nEtape 6 : Prise de décision");
-
-        System.out.println("χ²observé = " + chi2Total + " <= 16,92 = χ²théorique");
-
+        // ===== Étape 6 : Décision automatique =====
+        String decision = (chi2Total <= 16.92) ? "H0 ACCEPTÉE" : "H0 REJETÉE";
+        System.out.println("\nEtape 6 : Décision automatique");
+        System.out.println("χ²observé = " + chi2Total + " → " + decision);
     }
 }

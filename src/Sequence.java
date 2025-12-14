@@ -6,13 +6,12 @@ public class Sequence {
     private ArrayList<Integer> sequence;
 
     public Sequence() {
+        this.sequence = new ArrayList<>();
         getParams();
+
         if (areCoprime(c, m) && isDivisibleByAll(a-1, primeFactors(m)) && isMultipleOf4(m, a)) {
-            this.sequence = new ArrayList<>();
             generateSuite();
             System.out.println("Le théorème de Hull-Dobell est vérifié. Et la période de la suite est : " + sequence.size());
-        } else {
-            System.out.println("Le théoreme de Hull-Dobell n'est pas vérifié.");
         }
     }
 
@@ -33,7 +32,7 @@ public class Sequence {
         this.x0 = 1;
         this.a = 21;
         this.c = 3;
-        this.m = 1000;
+        this.m = 120;
     }
 
     private void generateSuite() {
@@ -45,16 +44,14 @@ public class Sequence {
     }
 
     private boolean areCoprime(int nb1, int nb2){
-        while (nb1 != nb2){
-            if (nb1 > nb2){
-                nb1 -= nb2;
-            }
-            else{
-                nb2 -= nb1;
-            }
+        while (nb2 != 0) {
+            int temp = nb2;
+            nb2 = nb1 % nb2;
+            nb1 = temp;
         }
         return nb1 == 1;
     }
+
 
     private ArrayList<Integer> primeFactors(int number) {
         ArrayList<Integer> factors = new ArrayList<>();
