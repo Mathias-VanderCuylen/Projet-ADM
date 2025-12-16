@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Da {
-    private int m;
-    private ArrayList<Integer> sequence;
     private static Scanner clavier;
 
     static {
