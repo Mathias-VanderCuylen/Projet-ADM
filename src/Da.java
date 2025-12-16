@@ -26,24 +26,34 @@ public class Da {
     private ArrayList<Double> prixTotalParStation(int nbStationsMax) {
         ArrayList<Double> totalParStation = new ArrayList<>();
 
+        ArrayList<Client> station;
+        double coutTotal;
+        ArrayList<Client> fileOrdinaire;
+        ArrayList<Client> filePrioritaire;
+        int temps;
+        int nbNvClientOrdinaire;
+        int nbNvClientPrioritaire;
+        Client nvClient;
+        double cout;
+        int tailleFile;
+        int nbPrioritaireAbsolu;
+        
         int nbStations = 1;
 
         for (int i = 0; i < nbStationsMax; i++) {
-            ArrayList<Client> station = new ArrayList<>();
-            double coutTotal = 0;
+            station = new ArrayList<>();
+            coutTotal = 0;
 
-            ArrayList<Client> fileOrdinaire = new ArrayList<>();
-            ArrayList<Client> filePrioritaire = new ArrayList<>();
+            fileOrdinaire = new ArrayList<>();
+            filePrioritaire = new ArrayList<>();
 
-            int temps = 0;
+            temps = 0;
 
             do {
-                int nbNvClientOrdinaire = loiPoisson(1.5);
-                int nbNvClientPrioritaire = loiPoisson(0.7);
+                nbNvClientOrdinaire = loiPoisson(1.5);
+                nbNvClientPrioritaire = loiPoisson(0.7);
 
                 System.out.println(station + "\n" + fileOrdinaire + "\n" + filePrioritaire + "\n" + nbNvClientOrdinaire + "\n" + nbNvClientPrioritaire);
-
-                Client nvClient;
 
                 while (nbNvClientOrdinaire > 0) {
                     nvClient = new Client(Client.Priorite.ORDINAIRE);
@@ -73,7 +83,6 @@ public class Da {
                     System.out.println(client);
                 }
 
-                double cout;
                 for (int iStation = 0; iStation < nbStations; iStation++) {
                     if (station.get(iStation) != null) {
                         cout = (station.get(iStation).getType() == Client.Priorite.ORDINAIRE ? 0.47 : 0.55);
@@ -92,7 +101,7 @@ public class Da {
                         if (!filePrioritaire.isEmpty()) {
                             station.set(iStation, filePrioritaire.get(0));
 
-                            int tailleFile = filePrioritaire.size() - 1;
+                            tailleFile = filePrioritaire.size() - 1;
                             for (int iFile = 0; iFile < tailleFile; iFile++) {
                                 filePrioritaire.set(iFile, filePrioritaire.get(iFile + 1));
                             }
@@ -103,7 +112,7 @@ public class Da {
                             if (!fileOrdinaire.isEmpty()) {
                                 station.set(iStation, fileOrdinaire.get(0));
 
-                                int tailleFile = fileOrdinaire.size() - 1;
+                                tailleFile = fileOrdinaire.size() - 1;
                                 for (int iFile = 0; iFile < tailleFile; iFile++) {
                                     fileOrdinaire.set(iFile, fileOrdinaire.get(iFile + 1));
                                 }
@@ -116,7 +125,7 @@ public class Da {
                     }
                 }
 
-                int nbPrioritaireAbsolu = 0;
+                nbPrioritaireAbsolu = 0;
                 for (Client client : filePrioritaire) {
                     if (client.getType() == Client.Priorite.ABSOLU) {
                         nbPrioritaireAbsolu++;
