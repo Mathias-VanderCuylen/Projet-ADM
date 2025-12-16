@@ -37,10 +37,8 @@ public class Da {
         double cout;
         int tailleFile;
         int nbPrioritaireAbsolu;
-        
-        int nbStations = 1;
 
-        for (int i = 0; i < nbStationsMax; i++) {
+        for (int nbStations = 1; nbStations < nbStationsMax; nbStations++) {
             station = new ArrayList<>();
             coutTotal = 0;
 
