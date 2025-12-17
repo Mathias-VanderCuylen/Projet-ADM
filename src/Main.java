@@ -1,5 +1,5 @@
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Sequence sequence = new Sequence();
         if (!sequence.isValid()) {
             System.out.println("Le théoreme de Hull-Dobell n'est pas vérifié.");
