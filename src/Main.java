@@ -1,13 +1,12 @@
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         Sequence sequence = new Sequence();
-        if (!sequence.isValid()) {
+        if (sequence.getSequence().isEmpty()) {
             System.out.println("Le théoreme de Hull-Dobell n'est pas vérifié.");
-            System.out.println(sequence);
         } else {
             System.out.println(sequence);
             FrequencyTest.run(sequence.getSequence());
-            PokerTest.run(sequence.getSequence(), sequence.getM());
+            PokerTest.run(sequence.getSequence(), 120);
         }
     }
 }

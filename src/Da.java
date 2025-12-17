@@ -1,21 +1,27 @@
 import java.util.ArrayList;
-import java.util.Scanner;
+// import java.util.Scanner;
 
 public class Da {
-    private static Scanner clavier;
+    // private static Scanner clavier;
+    private static final double COUT_ATTENTE;
+    private static final Sequence sequence;
+    private static int iSequence;
 
     static {
-        clavier = new Scanner(System.in);
+        // clavier = new Scanner(System.in);
+        COUT_ATTENTE = 0.3;
+        sequence = new Sequence();//1, 21, 3, 40000);
+        iSequence = 0;
     }
 
-    public int nbStationsOptimal() {
-        int nbStationsMax = clavier.nextInt();
-        ArrayList<Double> prixParStation = prixTotalParStation(nbStationsMax);
+    public int nbStationsOptimal(int nbStationsMax) {
+        ArrayList<Double> prixPourStations = prixTotalPourNbStations(nbStationsMax);
         
         int nbStationsOptimal = 0;
+        int taille = prixPourStations.size();
 
-        for (int i = 0; i < nbStationsMax; i++) {
-            if (prixParStation.get(i) < prixParStation.get(nbStationsOptimal)) {
+        for (int i = 1; i < taille; i++) {
+            if (prixPourStations.get(i) < prixPourStations.get(nbStationsOptimal)) {
                 nbStationsOptimal = i;
             }
         }
@@ -23,10 +29,10 @@ public class Da {
         return nbStationsOptimal + 1;
     }
 
-    private ArrayList<Double> prixTotalParStation(int nbStationsMax) {
+    private ArrayList<Double> prixTotalPourNbStations(int nbStationsMax) {
         ArrayList<Double> totalParStation = new ArrayList<>();
 
-        ArrayList<Client> station;
+        Client[] station;
         double coutTotal;
         ArrayList<Client> fileOrdinaire;
         ArrayList<Client> filePrioritaire;
@@ -35,11 +41,10 @@ public class Da {
         int nbNvClientPrioritaire;
         Client nvClient;
         double cout;
-        int tailleFile;
         int nbPrioritaireAbsolu;
 
-        for (int nbStations = 1; nbStations < nbStationsMax; nbStations++) {
-            station = new ArrayList<>();
+        for (int nbStations = 1; nbStations <= nbStationsMax; nbStations++) {
+            station = new Client[nbStations];
             coutTotal = 0;
 
             fileOrdinaire = new ArrayList<>();
@@ -51,7 +56,10 @@ public class Da {
                 nbNvClientOrdinaire = loiPoisson(1.5);
                 nbNvClientPrioritaire = loiPoisson(0.7);
 
-                System.out.println(station + "\n" + fileOrdinaire + "\n" + filePrioritaire + "\n" + nbNvClientOrdinaire + "\n" + nbNvClientPrioritaire);
+                for (Client client : station) {
+                    System.out.println(client);
+                }
+                System.out.println(fileOrdinaire + "\n" + filePrioritaire + "\n" + nbNvClientOrdinaire + "\n" + nbNvClientPrioritaire);
 
                 while (nbNvClientOrdinaire > 0) {
                     nvClient = new Client(Client.Priorite.ORDINAIRE);
@@ -63,7 +71,7 @@ public class Da {
                 }
 
                 while (nbNvClientPrioritaire > 0) {
-                    nvClient = new Client(probabiliteDuree() > 0.3 ? Client.Priorite.PRIORITAIRE : Client.Priorite.ABSOLU);
+                    nvClient = new Client(probabilitePrioritaire());
                     nvClient.setDuree(probabiliteDuree());
                     filePrioritaire.add(nvClient);
 
@@ -82,42 +90,30 @@ public class Da {
                 }
 
                 for (int iStation = 0; iStation < nbStations; iStation++) {
-                    if (station.get(iStation) != null) {
-                        cout = (station.get(iStation).getType() == Client.Priorite.ORDINAIRE ? 0.47 : 0.55);
+                    if (station[iStation] != null) {
+                        cout = (station[iStation].getType() == Client.Priorite.ORDINAIRE ? 0.47 : 0.55);
                         coutTotal += cout;
-                        
-                        station.get(iStation).decrementeDuree();
 
-                        if (station.get(iStation).getDuree() == 0) {
-                            station.set(iStation, null);
+                        station[iStation].decrementeDuree();
+
+                        if (station[iStation].getDuree() == 0) {
+                            station[iStation] = null;
                         }
                     }
                 }
 
                 for (int iStation = 0; iStation < nbStations; iStation++) {
-                    if (station.get(iStation) != null) {
+                    if (station[iStation] == null) {
                         if (!filePrioritaire.isEmpty()) {
-                            station.set(iStation, filePrioritaire.get(0));
-
-                            tailleFile = filePrioritaire.size() - 1;
-                            for (int iFile = 0; iFile < tailleFile; iFile++) {
-                                filePrioritaire.set(iFile, filePrioritaire.get(iFile + 1));
-                            }
-
-                            filePrioritaire.remove(tailleFile);
+                            station[iStation] = filePrioritaire.getFirst();
+                            filePrioritaire.removeFirst();
 
                         } else {
                             if (!fileOrdinaire.isEmpty()) {
-                                station.set(iStation, fileOrdinaire.get(0));
-
-                                tailleFile = fileOrdinaire.size() - 1;
-                                for (int iFile = 0; iFile < tailleFile; iFile++) {
-                                    fileOrdinaire.set(iFile, fileOrdinaire.get(iFile + 1));
-                                }
-
-                                fileOrdinaire.remove(tailleFile);
+                                station[iStation] = fileOrdinaire.getFirst();
+                                fileOrdinaire.removeFirst();
                             } else {
-                                coutTotal += 0.3;
+                                coutTotal += COUT_ATTENTE;
                             }
                         }
                     }
@@ -158,14 +154,30 @@ public class Da {
     }
 
     private int loiPoisson(double lambda) {
-        return 0; // temporaire
+        double L = Math.exp(-lambda);
+        int k = 0;
+        double p = 1.0;
+
+        do {
+            k++;
+            p *= sequence.getSequence().get(iSequence++);
+        } while (p > L);
+
+        return k - 1;
     }
 
-    private double probabiliteDuree() {
-        return 0.4; // temporaire
+    private int probabiliteDuree() {
+        double number = sequence.getSequence().get(iSequence++);
+
+        return number < 0.4 ? 1 :
+               number < 0.7 ? 2 :
+               number < 0.87 ? 3 :
+               number < 0.92 ? 4 :
+               number < 0.97 ? 5 : 6
+        ;
     }
 
-    private double probabilitePrioritaire() {
-        return 0.5; // temporaire: 30% prioritaire, 70% absolu
+    private Client.Priorite probabilitePrioritaire() {
+        return (sequence.getSequence().get(iSequence++) < 0.3 ? Client.Priorite.PRIORITAIRE : Client.Priorite.ABSOLU); // 30% prioritaire, 70% absolu
     }
 }
