@@ -6,7 +6,7 @@ public class FrequencyTest {
         System.out.println("\n===== TEST DES FREQUENCES =====");
 
         System.out.println("\nEtape 1 : Hypothèse H0 :");
-        System.out.println("H0 : Les yn suivent une distribution uniforme sur l'ensemble {0,1,2,...,9}. Chaque chiffre de 0 à 9 a la même probabiité.");
+        System.out.println("H0 : Les yn suivent une distribution uniforme sur l'ensemble {0,1,2,...,9}. \nChaque chiffre de 0 à 9 a la même probabiité.");
         System.out.println("H1 : Les yn ne suivent pas une distribution uniforme sur {0,1,2,...,9}.");
 
         System.out.println("\nEtape 2 : Niveau d'incertitude :");
