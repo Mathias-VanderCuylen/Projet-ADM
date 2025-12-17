@@ -41,7 +41,6 @@ public class Da {
         int nbNvClientPrioritaire;
         Client nvClient;
         double cout;
-        int tailleFile;
         int nbPrioritaireAbsolu;
 
         for (int nbStations = 1; nbStations <= nbStationsMax; nbStations++) {
@@ -91,7 +90,7 @@ public class Da {
                 }
 
                 for (int iStation = 0; iStation < nbStations; iStation++) {
-                    if (station[iStation] == null) {
+                    if (station[iStation] != null) {
                         cout = (station[iStation].getType() == Client.Priorite.ORDINAIRE ? 0.47 : 0.55);
                         coutTotal += cout;
 
@@ -104,7 +103,7 @@ public class Da {
                 }
 
                 for (int iStation = 0; iStation < nbStations; iStation++) {
-                    if (station[iStation] != null) {
+                    if (station[iStation] == null) {
                         if (!filePrioritaire.isEmpty()) {
                             station[iStation] = filePrioritaire.getFirst();
                             filePrioritaire.removeFirst();
