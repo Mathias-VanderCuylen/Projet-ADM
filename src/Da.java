@@ -169,19 +169,12 @@ public class Da {
     private int probabiliteDuree() {
         double number = sequence.getSequence().get(iSequence++);
 
-        if (number < 0.40) {
-            return 1;
-        } else if (number < 0.70) {
-            return 2;
-        } else if (number < 0.87) {
-            return 3;
-        } else if (number < 0.92) {
-            return 4;
-        } else if (number < 0.97) {
-            return 5;
-        } else {
-            return 6;
-        }
+        return number < 0.4 ? 1 :
+               number < 0.7 ? 2 :
+               number < 0.87 ? 3 :
+               number < 0.92 ? 4 :
+               number < 0.97 ? 5 : 6
+        ;
     }
 
     private Client.Priorite probabilitePrioritaire() {
