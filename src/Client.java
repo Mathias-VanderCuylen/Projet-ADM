@@ -6,7 +6,7 @@ public class Client {
     }
 
     private Priorite type;
-    private double duree;
+    private int duree;
 
     public Client(Priorite type) {
         this.type = type;
@@ -16,15 +16,11 @@ public class Client {
         return type;
     }
 
-    public void setType(Priorite type) {
-        this.type = type;
-    }
-
-    public double getDuree() {
+    public int getDuree() {
         return duree;
     }
 
-    public void setDuree(double duree) {
+    public void setDuree(int duree) {
         this.duree = duree;
     }
 

@@ -1,13 +1,15 @@
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Sequence {
     private int x0, a, c, m;
     private ArrayList<Integer> sequence;
 
-    public Sequence() {
+    public Sequence(int x0, int a, int c, int m) {
         this.sequence = new ArrayList<>();
-        getParams();
+        this.x0 = x0;
+        this.a = a;
+        this.c = c;
+        this.m = m;
 
         if (areCoprime(c, m) && isDivisibleByAll(a-1, primeFactors(m)) && isMultipleOf4(m, a)) {
             generateSuite();
@@ -15,11 +17,19 @@ public class Sequence {
         }
     }
 
+    public Sequence() {
+        this(1, 21, 3, 120);
+    }
+
+    public int getM() {
+        return m;
+    }
+
     public ArrayList<Integer> getSequence() {
         return sequence;
     }
 
-    private void getParams() {
+//    private void getParams() {
 //        Scanner Keyboard = new Scanner(System.in);
 //        System.out.println("Entrez la valeur initiale (X0)");
 //        this.x0 = Keyboard.nextInt();
@@ -29,11 +39,8 @@ public class Sequence {
 //        this.c = Keyboard.nextInt();
 //        System.out.println("Entrez le module (m)");
 //        this.m = Keyboard.nextInt();
-        this.x0 = 1;
-        this.a = 21;
-        this.c = 3;
-        this.m = 120;
-    }
+
+//    }
 
     private void generateSuite() {
         int xn = this.x0;
@@ -77,18 +84,30 @@ public class Sequence {
         return factors;
     }
 
-    private boolean isDivisibleByAll(int number, ArrayList<Integer> factors) {
+    /*private boolean isDivisibleByAll(int number, ArrayList<Integer> factors) {
         for (int f : factors) {
             if (number % f != 0) return false;
         }
         return true;
+    }*/
+
+    private boolean isDivisibleByAll(int number, ArrayList<Integer> factors) {
+        int size = factors.size();
+        int iFactor = 0;
+
+        while (iFactor < size && number % factors.get(iFactor) == 0) {
+            iFactor++;
+        }
+
+        return iFactor == size;
     }
 
     private boolean isMultipleOf4 (int module, int multiplicator) {
        return module % 4 != 0 || (multiplicator - 1) % 4 == 0;
     }
 
+    /* @Override
     public String toString() {
         return sequence.toString();
-    }
+    } */
 }
