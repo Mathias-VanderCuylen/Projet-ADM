@@ -11,6 +11,6 @@ public class Main {
         }*/
 
         Da da = new Da();
-        System.out.println("Nombre de stations optimal : " + da.nbStationsOptimal(5));
+        System.out.println("Nombre de stations optimal : " + da.nbStationsOptimal(20));
     }
 }

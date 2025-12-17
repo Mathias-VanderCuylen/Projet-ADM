@@ -22,7 +22,7 @@ public class Sequence {
     }
 
     public Sequence() {
-        this(1, 21, 3, 120);
+        this(42, 401, 1337, 10000);
     }
 
     //public ArrayList<Integer> getSequence() {

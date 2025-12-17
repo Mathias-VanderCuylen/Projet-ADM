@@ -10,7 +10,7 @@ public class Da {
     static {
         // clavier = new Scanner(System.in);
         COUT_ATTENTE = 0.3;
-        sequence = new Sequence(1, 21, 3, 120);
+        sequence = new Sequence();//1, 21, 3, 40000);
         iSequence = 0;
     }
 
