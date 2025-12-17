@@ -25,8 +25,16 @@ public class Sequence {
         this(1, 21, 3, 120);
     }
 
-    public ArrayList<Integer> getSequence() {
-        return sequence;
+    //public ArrayList<Integer> getSequence() {
+    //    return sequence;
+    //}
+
+    public ArrayList<Double> getSequence() { // normalisée
+        ArrayList<Double> normalized = new ArrayList<>();
+        for (int val : sequence) {
+            normalized.add((double) val / m);
+        }
+        return normalized;
     }
 
     private void getParams() {
